@@ -13,6 +13,9 @@
                 <x-blocks.blood-stock-card type="O" stock="30" />
             </div>
         </section>
+        <x-sections.info-donor />
+        <x-sections.visi-misi />
+        <x-sections.galeri />
     </main>
 
 </x-layouts.app>
