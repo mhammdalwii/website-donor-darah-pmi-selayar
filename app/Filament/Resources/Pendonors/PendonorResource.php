@@ -24,7 +24,7 @@ class PendonorResource extends Resource
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $modelLabel = 'Data Pendonor';
-    protected static ?string $pluralModelLabel = 'Daftar Pendonor';
+    protected static ?string $pluralModelLabel = 'Data Pendonor';
 
     protected static string | \UnitEnum | null $navigationGroup = null;
 

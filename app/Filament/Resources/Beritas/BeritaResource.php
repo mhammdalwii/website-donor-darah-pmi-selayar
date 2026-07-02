@@ -63,7 +63,8 @@ class BeritaResource extends Resource
                     Forms\Components\FileUpload::make('gambar')
                         ->label('Gambar Sampul (Thumbnail)')
                         ->image()
-                        ->maxSize(2048) // Membatasi ukuran maksimal file (2048 KB = 2 Megabytes)
+                        ->maxSize(2048)
+                        ->disk('public_uploads')
                         ->directory('berita-images')
                         ->columnSpanFull(),
 
@@ -90,6 +91,7 @@ class BeritaResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('gambar')
                     ->label('Sampul')
+                    ->disk('public_uploads')
                     ->square(),
 
                 Tables\Columns\TextColumn::make('judul')

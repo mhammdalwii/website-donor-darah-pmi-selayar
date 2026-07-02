@@ -22,7 +22,7 @@ class JadwalResource extends Resource
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-calendar-days';
 
     protected static ?string $modelLabel = 'Jadwal Kegiatan';
-    protected static ?string $pluralModelLabel = 'Jadwal Mobile Unit';
+    protected static ?string $pluralModelLabel = 'Update jadwal lokasi kegiatan';
 
     protected static string | \UnitEnum | null $navigationGroup = null;
 
