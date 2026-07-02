@@ -1,4 +1,5 @@
-<div class="relative bg-linear-to-br from-[#e0313a] to-[#be1e26] pt-44 pb-48 px-4 text-center overflow-hidden">
+<div id="beranda"
+    class="relative bg-linear-to-br from-[#e0313a] to-[#be1e26] pt-44 pb-48 px-4 text-center overflow-hidden">
     <div class="max-w-4xl mx-auto relative z-10">
         <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">
             Selamatkan Jiwa,<br class="md:hidden"> Mulai dari Anda.
