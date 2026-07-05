@@ -56,7 +56,7 @@
                                 clip-rule="evenodd" />
                         </svg>
 
-                        <span>pmi.selayar@gmail.com</span>
+                        <span>pmiselayar</span>
                     </li>
                 </ul>
             </div>

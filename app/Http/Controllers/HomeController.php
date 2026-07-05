@@ -8,6 +8,7 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use App\Models\Pendonor;
 use App\Models\Jadwal;
 use App\Models\Berita;
+use App\Models\Galeri;
 
 class HomeController extends Controller
 {
@@ -85,5 +86,17 @@ class HomeController extends Controller
         }
 
         return view('pages.berita.show', compact('berita'));
+    }
+
+    public function galeri()
+    {
+        SEOMeta::setTitle('Galeri Kegiatan - PMI Selayar');
+        SEOMeta::setDescription('Dokumentasi dan galeri foto kegiatan kemanusiaan PMI Kabupaten Kepulauan Selayar.');
+
+        // Mengambil foto dari yang terbaru, 12 foto per halaman
+        $galeris = Galeri::latest()->paginate(16);
+
+        // Arahkan ke file view galeri Anda
+        return view('pages.galeri.galeri', compact('galeris'));
     }
 }
