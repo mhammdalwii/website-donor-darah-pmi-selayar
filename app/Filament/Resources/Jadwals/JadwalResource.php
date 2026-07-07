@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\jadwals;
+namespace App\Filament\Resources\Jadwals;
 
 use App\Filament\Resources\Jadwals\Pages;
 use App\Models\Jadwal;
