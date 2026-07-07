@@ -1,0 +1,131 @@
+<?php
+
+namespace App\Filament\Resources\Users;
+
+use App\Filament\Resources\Users\Pages;
+use App\Models\User;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+
+
+
+
+class UserResource extends Resource
+{
+    protected static ?string $model = User::class;
+
+    // Ikon untuk di sidebar admin
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
+
+    // Penamaan Menu di Admin
+    protected static ?string $navigationLabel = 'Manajemen Pengguna';
+    protected static ?string $modelLabel = 'Pengguna';
+    protected static ?string $pluralModelLabel = 'Data Pengguna';
+
+    // Mengelompokkan menu (opsional agar lebih rapi)
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema->components([
+            Section::make('Informasi Akun')
+                ->description('Kelola data dan hak akses pengguna di sini.')
+                ->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->label('Nama Lengkap')
+                        ->required()
+                        ->maxLength(255),
+
+                    Forms\Components\TextInput::make('no_hp')
+                        ->label('Nomor HP')
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->maxLength(20),
+
+                    Forms\Components\Textarea::make('alamat')
+                        ->label('Alamat Lengkap')
+                        ->maxLength(65535)
+                        ->columnSpanFull(),
+
+                    Forms\Components\TextInput::make('password')
+                        ->label('Password Baru')
+                        ->password()
+                        ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                        ->dehydrated(fn($state) => filled($state))
+                        ->required(fn(string $context): bool => $context === 'create'),
+
+                    Forms\Components\Toggle::make('is_admin')
+                        ->label('Jadikan Admin')
+                        ->helperText('Aktifkan ini untuk memberikan hak akses masuk ke Dashboard Admin.')
+                        ->onColor('success')
+                        ->offColor('danger')
+                        ->inline(false),
+                ])->columns(2),
+        ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Lengkap')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('no_hp')
+                    ->label('Nomor HP')
+                    ->searchable(),
+
+                // Menampilkan status akun menggunakan ikon
+                Tables\Columns\IconColumn::make('is_admin')
+                    ->label('Role/Peran')
+                    ->boolean()
+                    ->trueIcon('heroicon-s-shield-check')
+                    ->falseIcon('heroicon-s-user')
+                    ->trueColor('success')
+                    ->falseColor('gray'),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Tanggal Daftar')
+                    ->dateTime('d M Y')
+                    ->sortable(),
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->filters([
+                // Filter untuk memisahkan tampilan admin dan masyarakat
+                Tables\Filters\TernaryFilter::make('is_admin')
+                    ->label('Filter Role')
+                    ->boolean()
+                    ->trueLabel('Hanya Admin')
+                    ->falseLabel('Hanya Masyarakat Biasa')
+                    ->native(false),
+            ])
+            ->actions([
+                EditAction::make(),
+                //  bisa menambahkan fitur Hapus jika diperlukan
+                // Tables\Actions\DeleteAction::make(), 
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
+        ];
+    }
+}
