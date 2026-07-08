@@ -1,15 +1,11 @@
 <x-layouts.app>
-    <!-- Wrapper Utama dengan Posisi Relative -->
     <div class="min-h-screen flex items-center justify-center relative px-4 py-20">
-
         <!-- Background Image & Overlay -->
         <div class="absolute inset-0 z-0">
-            <!-- Ganti URL ini dengan gambar Anda sendiri -->
             <img src="assets/images/auth.jpeg" alt="Background PMI" class="w-full h-full object-cover" />
             <div class="absolute inset-0 bg-black/60 mix-blend-multiply"></div>
         </div>
 
-        <!-- Kotak Form (Z-index agar melayang di atas gambar) -->
         <div
             class="max-w-md w-full bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-gray-100 relative z-10 my-8">
             <div class="text-center mb-8">
@@ -26,6 +22,17 @@
                             class="text-red-500">*</span></label>
                     <input type="text" name="nama" required
                         class="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white/80 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition">
+                </div>
+
+                <!-- FIELD EMAIL BARU -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Email <span
+                            class="text-red-500">*</span></label>
+                    <input type="email" name="email" required
+                        class="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white/80 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition">
+                    @error('email')
+                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div>
@@ -51,7 +58,6 @@
                     <div x-data="{ show: false }" class="relative">
                         <input :type="show ? 'text' : 'password'" name="password" required
                             class="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white/80 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition pr-12">
-
                         <button type="button" @click="show = !show"
                             class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-[#df3038] focus:outline-none transition-colors">
                             <svg x-show="!show" class="w-5 h-5" fill="none" stroke="currentColor"

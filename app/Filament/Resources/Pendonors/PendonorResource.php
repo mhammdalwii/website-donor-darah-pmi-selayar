@@ -74,7 +74,7 @@ class PendonorResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                // 2. Kolom Alamat (Diberi limit & placeholder jika kosong)
+                //  Kolom Alamat (Diberi limit & placeholder jika kosong)
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
                     ->limit(40)
@@ -82,7 +82,7 @@ class PendonorResource extends Resource
                     ->color('gray')
                     ->searchable(),
 
-                // 3. Kolom Golongan Darah (Rata tengah untuk estetika badge)
+                //  Kolom Golongan Darah (Rata tengah untuk estetika badge)
                 Tables\Columns\TextColumn::make('golongan_darah')
                     ->label('Golongan Darah')
                     ->badge()
@@ -96,7 +96,7 @@ class PendonorResource extends Resource
                     })
                     ->searchable(),
 
-                // 4. Kolom Kontak WA (Dibuat menarik dan interaktif)
+                //  Kolom Kontak WA 
                 Tables\Columns\TextColumn::make('nomor_telepon')
                     ->label('Kontak WA')
                     ->icon('heroicon-m-chat-bubble-left-ellipsis')
@@ -109,7 +109,10 @@ class PendonorResource extends Resource
                         if (substr($phone, 0, 1) === '0') {
                             $phone = '62' . substr($phone, 1);
                         }
-                        return "https://wa.me/{$phone}";
+
+                        // Teks otomatis dengan memanggil nama pendonor
+                        $pesan = "Assalamualaikum wr wb bapak/ibu {$record->nama_lengkap}, mohon maaf mengganggu waktunya. Izin apakah bapak/ibu bersedia untuk donor darah? Saya dpt wa nya dari informasi resmi PMI.";
+                        return "https://wa.me/{$phone}?text=" . urlencode($pesan);
                     })
                     ->openUrlInNewTab(),
 

@@ -24,13 +24,23 @@ class HomeController extends Controller
         OpenGraph::setUrl(url()->current());
         OpenGraph::addProperty('type', 'website');
 
+        // Mengambil data Stok Darah dari Database Anda
         $stokA = StokDarah::where('golongan_darah', 'A')->value('jumlah_kantong') ?? 0;
         $stokB = StokDarah::where('golongan_darah', 'B')->value('jumlah_kantong') ?? 0;
         $stokAB = StokDarah::where('golongan_darah', 'AB')->value('jumlah_kantong') ?? 0;
         $stokO = StokDarah::where('golongan_darah', 'O')->value('jumlah_kantong') ?? 0;
 
-        // Mengirimkan variabel stok ke view 'pages.home'
-        return view('pages.home', compact('stokA', 'stokB', 'stokAB', 'stokO'));
+        // 1. Tambahan: Ambil 5 data pendonor terbaru untuk dipasang di Beranda
+        $pendonors = Pendonor::latest()->take(5)->get();
+
+
+        $beritas = Berita::where('status', 'publish')
+            ->orderBy('tanggal_publikasi', 'desc')
+            ->take(3)
+            ->get();
+
+        // Mengirimkan semua variabel yang dibutuhkan ke view 'pages.home'
+        return view('pages.home', compact('stokA', 'stokB', 'stokAB', 'stokO', 'pendonors', 'beritas'));
     }
 
     public function daftar()
@@ -98,5 +108,21 @@ class HomeController extends Controller
 
         // Arahkan ke file view galeri Anda
         return view('pages.galeri.galeri', compact('galeris'));
+    }
+
+    public function syarat()
+    {
+        SEOMeta::setTitle('Syarat & Manfaat Donor Darah - PMI Selayar');
+        SEOMeta::setDescription('Informasi lengkap mengenai syarat, ketentuan, alur, dan manfaat melakukan donor darah di PMI Kabupaten Kepulauan Selayar.');
+
+        return view('pages.donor.syarat');
+    }
+
+    public function visiMisi()
+    {
+        SEOMeta::setTitle('Visi & Misi - PMI Selayar');
+        SEOMeta::setDescription('Visi dan Misi Palang Merah Indonesia (PMI) Kabupaten Kepulauan Selayar dalam melayani kemanusiaan.');
+
+        return view('pages.profil.visi-misi');
     }
 }

@@ -1,19 +1,13 @@
 <x-layouts.app>
-    <!-- Wrapper Utama dengan Posisi Relative -->
     <div class="min-h-screen flex items-center justify-center relative px-4 py-12">
-
-        <!-- Background Image & Overlay -->
         <div class="absolute inset-0 z-0">
-            <img src="assets/images/auth.jpeg" alt="Background PMI" class="w-full h-full object-cover" />
-            <!-- Lapisan gelap agar kotak form tetap terbaca -->
+            <img src="assets/images/auth.jpeg"" alt="Background PMI" class="w-full h-full object-cover" />
             <div class="absolute inset-0 bg-black/60 mix-blend-multiply"></div>
         </div>
 
-        <!-- Kotak Form (Z-index agar melayang di atas gambar) -->
         <div
             class="max-w-md w-full bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-gray-100 relative z-10">
             <div class="text-center mb-8">
-                <!-- Tambahan Logo Kecil di Atas Form (Opsional) -->
                 <img src="{{ asset('assets/images/logoPMI.png') }}" alt="Logo PMI"
                     class="w-30 h-16 mx-auto mb-4 object-contain">
                 <h2 class="text-3xl font-bold text-gray-900">Selamat Datang</h2>
@@ -29,13 +23,21 @@
             <form action="{{ route('login') }}" method="POST" class="space-y-5">
                 @csrf
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor HP</label>
-                    <input type="number" name="no_hp" required
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email atau Nomor HP</label>
+                    <input type="text" name="login_id" placeholder="Masukkan email atau no. hp" required
                         class="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white/80 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-sm font-medium text-gray-700">Password</label>
+                        <a href="https://wa.me/6281543116436?text=Halo%20Admin%20PMI%20Selayar,%20saya%20lupa%20password%20akun%20saya.%20Mohon%20bantuannya%20untuk%20mereset%20password."
+                            target="_blank"
+                            class="text-xs font-semibold text-[#df3038] hover:text-[#be1e26] hover:underline transition-colors">
+                            Lupa Password?
+                        </a>
+                    </div>
+
                     <div x-data="{ show: false }" class="relative">
                         <input :type="show ? 'text' : 'password'" name="password" required
                             class="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white/80 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition pr-12">

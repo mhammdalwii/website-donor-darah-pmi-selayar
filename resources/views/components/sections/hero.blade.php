@@ -39,10 +39,10 @@
         <p class="text-white/95 text-base md:text-xl font-light mb-10 max-w-2xl mx-auto leading-relaxed drop-shadow-sm">
             Layanan informasi resmi donor darah Kabupaten Kepulauan Selayar.
         </p>
-        <x-elements.button href="#" variant="white"
+        {{-- <x-elements.button href="#" variant="white"
             class="px-10 py-3.5 text-base rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300">
             Mulai Donor
-        </x-elements.button>
+        </x-elements.button> --}}
     </div>
 
     <!-- Indikator Slide (Titik-titik di bawah teks) -->
