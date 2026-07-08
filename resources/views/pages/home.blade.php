@@ -2,7 +2,7 @@
 
     <x-sections.navbar />
 
-    <main class="bg-gray-50">
+    <main class="bg-gray-50 pb-12">
         <x-sections.hero />
 
         <section class="max-w-6xl mx-auto px-4 relative z-20 -mt-24 sm:-mt-28 mb-24">
@@ -23,8 +23,11 @@
                 </p>
             </div>
         </section>
-        <x-sections.info-donor />
-        <x-sections.visi-misi />
+
+        <x-sections.pendonor-home :pendonors="$pendonors" />
+
+        <x-sections.berita-home :beritas="$beritas" />
+
         <x-sections.galeri />
     </main>
 

@@ -38,4 +38,6 @@ Route::middleware('auth')->group(function () {
 
     // route : galeri
     Route::get('/galeri', [HomeController::class, 'galeri'])->name('galeri.index');
+    Route::get('/donor/syarat', [HomeController::class, 'syarat']);
+    Route::get('/profil/visi-misi', [HomeController::class, 'visiMisi']);
 });

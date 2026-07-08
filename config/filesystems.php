@@ -49,7 +49,7 @@ return [
 
         'public_uploads' => [
             'driver' => 'local',
-            'root' => public_path('uploads'),
+            'root' => base_path('../public_html/uploads'),
             'url' => env('APP_URL') . '/uploads',
             'visibility' => 'public',
             'throw' => false,
