@@ -46,7 +46,7 @@
                                             }
 
                                             // Teks otomatis dengan memanggil nama pendonor
-                                            $pesan = "Assalamualaikum wr wb bapak/ibu {$pendonor->nama_lengkap}, mohon maaf mengganggu waktunya. Izin apakah bapak/ibu bersedia untuk donor darah? Saya dapat wa nya dari informasi resmi PMI.";
+                                            $pesan = "Assalamualaikum wr wb bapak/ibu {$pendonor->nama_lengkap}, mohon maaf mengganggu waktunya. Izin apakah bapak/ibu bersedia untuk donor darah? Saya dapat wa nya dari informasi resmi PMI Kabupaten Kepulauan Selayar.";
                                         @endphp
 
                                         <!-- Menambahkan pesan ke dalam link URL WhatsApp -->
