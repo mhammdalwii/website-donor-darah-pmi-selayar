@@ -41,7 +41,7 @@
                                     if (substr($phone, 0, 1) === '0') {
                                         $phone = '62' . substr($phone, 1);
                                     }
-                                    $pesan = "Assalamualaikum wr wb bapak/ibu {$pendonor->nama_lengkap}, mohon maaf mengganggu waktunya. Izin apakah bapak/ibu bersedia untuk donor darah? Saya dpt wa nya dari informasi resmi PMI.";
+                                    $pesan = "Assalamualaikum wr wb bapak/ibu {$pendonor->nama_lengkap}, mohon maaf mengganggu waktunya. Izin apakah bapak/ibu bersedia untuk donor darah? Saya dpt wa nya dari informasi resmi PMI Kabupaten Kepulauan Selayar.";
                                 @endphp
                                 <a href="https://wa.me/{{ $phone }}?text={{ urlencode($pesan) }}" target="_blank"
                                     class="inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition text-sm font-medium shadow-xs">

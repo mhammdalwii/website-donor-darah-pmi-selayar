@@ -5,8 +5,7 @@
         <div class="max-w-4xl mx-auto px-4">
 
             <div class="text-center mb-12">
-                <img src="{{ asset('assets/images/logoPMI.png') }}" alt="Logo PMI"
-                    class="w-24 h-24 mx-auto mb-6 object-contain drop-shadow-md">
+
                 <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Visi & Misi</h1>
                 <p class="text-gray-600 max-w-2xl mx-auto">Palang Merah Indonesia Kabupaten Kepulauan Selayar</p>
             </div>
