@@ -30,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            // ->login()
             ->brandName('PMI Selayar')
             ->colors([
                 'primary' => Color::Red,

@@ -16,24 +16,25 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // Ubah validasi menangkap input 'login_id' (bisa email/no_hp)
         $request->validate([
             'login_id' => 'required',
             'password' => 'required'
         ]);
 
-        // CEK OTOMATIS: Apakah input berupa format email? Jika ya, gunakan kolom 'email', jika tidak, gunakan 'no_hp'
         $fieldType = filter_var($request->login_id, FILTER_VALIDATE_EMAIL) ? 'email' : 'no_hp';
 
-        // Lakukan percobaan login
         if (Auth::attempt([$fieldType => $request->login_id, 'password' => $request->password])) {
             $request->session()->regenerate();
 
-            // Jika dia admin, bisa langsung diarahkan ke /admin (opsional), atau biarkan ke home
+            // CEK OTOMATIS: Jika yang login adalah Admin, lempar ke dashboard Filament
+            if (Auth::user()->is_admin) {
+                return redirect()->intended('/admin');
+            }
+
+            // Jika yang login adalah masyarakat biasa, lempar ke beranda
             return redirect()->intended('/');
         }
 
-        // Jika gagal login
         return back()->withErrors([
             'login_id' => 'Email / Nomor HP atau Password yang Anda masukkan salah.',
         ]);

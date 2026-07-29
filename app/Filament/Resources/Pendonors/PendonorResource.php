@@ -39,8 +39,12 @@ class PendonorResource extends Resource
                         ->maxLength(255),
                     Forms\Components\TextInput::make('nomor_telepon')
                         ->label('Nomor Telepon/WhatsApp')
+                        ->required()
                         ->tel()
-                        ->required(),
+                        ->extraInputAttributes(['oninput' => "this.value = this.value.replace(/[^0-9]/g, '')"])
+                        ->regex('/^[0-9]+$/')
+                        ->unique(ignoreRecord: true)
+                        ->maxLength(12),
                     Textarea::make('alamat')
                         ->label('Alamat Lengkap')
                         ->columnSpanFull(),

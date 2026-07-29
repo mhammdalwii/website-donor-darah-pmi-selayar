@@ -46,8 +46,11 @@ class UserResource extends Resource
                     Forms\Components\TextInput::make('no_hp')
                         ->label('Nomor HP')
                         ->required()
+                        ->tel()
+                        ->extraInputAttributes(['oninput' => "this.value = this.value.replace(/[^0-9]/g, '')"])
+                        ->regex('/^[0-9]+$/')
                         ->unique(ignoreRecord: true)
-                        ->maxLength(20),
+                        ->maxLength(12),
 
                     Forms\Components\Textarea::make('alamat')
                         ->label('Alamat Lengkap')
