@@ -23,16 +23,21 @@ class AuthController extends Controller
 
         $fieldType = filter_var($request->login_id, FILTER_VALIDATE_EMAIL) ? 'email' : 'no_hp';
 
-        if (Auth::attempt([$fieldType => $request->login_id, 'password' => $request->password])) {
+        // Cari user manual dari database
+        $user = User::where($fieldType, $request->login_id)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
             $request->session()->regenerate();
 
-            // CEK OTOMATIS: Jika yang login adalah Admin, lempar ke dashboard Filament
-            if (Auth::user()->is_admin) {
+            if ($user->is_admin) {
+                Auth::guard('admin')->login($user);
+                Auth::guard('web')->login($user);
                 return redirect()->intended('/admin');
+            } else {
+                // JALUR UMUM: Hanya login ke Portal (web)
+                Auth::guard('web')->login($user);
+                return redirect()->intended('/');
             }
-
-            // Jika yang login adalah masyarakat biasa, lempar ke beranda
-            return redirect()->intended('/');
         }
 
         return back()->withErrors([
@@ -47,7 +52,6 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        // Tambahkan validasi email
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -64,17 +68,18 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Langsung login setelah register berhasil
-        Auth::login($user);
+        // Langsung login ke jalur umum setelah daftar
+        Auth::guard('web')->login($user);
 
         return redirect('/');
     }
 
     public function logout(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        Auth::guard('web')->logout();
+
+        $request->session()->regenerate();
+
         return redirect('/login');
     }
 }

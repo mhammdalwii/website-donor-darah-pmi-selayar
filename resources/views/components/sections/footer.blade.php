@@ -27,7 +27,7 @@
                         </svg>
                         <a href="https://maps.google.com/?q=PMI+Kabupaten+Kepulauan+Selayar" target="_blank"
                             class="hover:text-[#df3038] transition-colors leading-relaxed">
-                            Jl. K.H. Ahmad Dahlan, Selayar, Sulawesi Selatan
+                            Jl. Abd. Kadir Kasim, Bontobangung, Kec. Bontoharu
                         </a>
                     </li>
 
