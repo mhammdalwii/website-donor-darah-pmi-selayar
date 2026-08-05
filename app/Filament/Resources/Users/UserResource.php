@@ -11,26 +11,20 @@ use Filament\Schemas\Components\Section;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
-use Filament\Actions\DeleteBulkAction;
+use Illuminate\Support\Facades\Auth;
 use Filament\Actions\EditAction;
 use Filament\Actions\BulkActionGroup;
-
-
-
+use Filament\Actions\DeleteBulkAction;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    // Ikon untuk di sidebar admin
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
 
-    // Penamaan Menu di Admin
     protected static ?string $navigationLabel = 'Manajemen Pengguna';
     protected static ?string $modelLabel = 'Pengguna';
     protected static ?string $pluralModelLabel = 'Data Pengguna';
-
-    // Mengelompokkan menu (opsional agar lebih rapi)
 
     public static function form(Schema $schema): Schema
     {
@@ -66,10 +60,15 @@ class UserResource extends Resource
 
                     Forms\Components\Toggle::make('is_admin')
                         ->label('Jadikan Admin')
-                        ->helperText('Aktifkan ini untuk memberikan hak akses masuk ke Dashboard Admin.')
+                        ->helperText(fn() => Auth::user()->email === 'admin@pmi.com'
+                            ? 'Aktifkan ini untuk memberikan hak akses masuk ke Dashboard Admin.'
+                            : 'Hanya Super Admin (admin@pmi.com) yang dapat mengubah hak akses ini.')
                         ->onColor('success')
                         ->offColor('danger')
-                        ->inline(false),
+                        ->inline(false)
+                        // KUNCI SUPER ADMIN: Fitur ini otomatis terkunci (disabled) jika yang login BUKAN admin@pmi.com
+                        ->disabled(fn() => Auth::user()->email !== 'admin@pmi.com')
+                        ->dehydrated(), // Wajib ada agar nilai is_admin tidak hilang saat admin biasa menyimpan form
                 ])->columns(2),
         ]);
     }
@@ -87,7 +86,6 @@ class UserResource extends Resource
                     ->label('Nomor HP')
                     ->searchable(),
 
-                // Menampilkan status akun menggunakan ikon
                 Tables\Columns\IconColumn::make('is_admin')
                     ->label('Role/Peran')
                     ->boolean()
@@ -103,7 +101,6 @@ class UserResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                // Filter untuk memisahkan tampilan admin dan masyarakat
                 Tables\Filters\TernaryFilter::make('is_admin')
                     ->label('Filter Role')
                     ->boolean()
@@ -112,9 +109,8 @@ class UserResource extends Resource
                     ->native(false),
             ])
             ->actions([
-                EditAction::make(),
-                //  bisa menambahkan fitur Hapus jika diperlukan
-                // Tables\Actions\DeleteAction::make(), 
+                EditAction::make()
+                    ->hidden(fn($record) => $record->email === 'admin@pmi.com' && Auth::user()->email !== 'admin@pmi.com'),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

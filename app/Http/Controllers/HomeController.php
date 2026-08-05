@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Berita;
+use App\Models\Galeri;
+use App\Models\Jadwal;
+use App\Models\Pendonor;
+use App\Models\ProfilPmi;
 use App\Models\StokDarah;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
-use App\Models\Pendonor;
-use App\Models\Jadwal;
-use App\Models\Berita;
-use App\Models\Galeri;
 
 class HomeController extends Controller
 {
@@ -123,6 +124,19 @@ class HomeController extends Controller
         SEOMeta::setTitle('Visi & Misi - PMI Selayar');
         SEOMeta::setDescription('Visi dan Misi Palang Merah Indonesia (PMI) Kabupaten Kepulauan Selayar dalam melayani kemanusiaan.');
 
-        return view('pages.profil.visi-misi');
+        // Mengambil 1 data profil pertama
+        $profil = ProfilPmi::first();
+
+        return view('pages.profil.visi-misi', compact('profil'));
+    }
+
+    public function struktur()
+    {
+        SEOMeta::setTitle('Struktur Pengurus - PMI Selayar');
+        SEOMeta::setDescription('Bagan struktur organisasi Palang Merah Indonesia (PMI) Kabupaten Kepulauan Selayar.');
+
+        $profil = ProfilPmi::first();
+
+        return view('pages.profil.struktur', compact('profil'));
     }
 }

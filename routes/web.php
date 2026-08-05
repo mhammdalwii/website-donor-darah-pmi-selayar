@@ -42,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/galeri', [HomeController::class, 'galeri'])->name('galeri.index');
     Route::get('/donor/syarat', [HomeController::class, 'syarat']);
     Route::get('/profil/visi-misi', [HomeController::class, 'visiMisi']);
-    Route::view('/profil/struktur', 'pages.profil.struktur')->name('profil.struktur');
+    Route::get('/profil/struktur', [HomeController::class, 'struktur'])->name('profil.struktur');
 
     // CONTOH: Jika Anda ingin menu "Daftar Donor" HANYA bisa diakses 
     // oleh orang yang SUDAH klik link verifikasi di emailnya, 
