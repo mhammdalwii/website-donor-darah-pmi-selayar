@@ -17,7 +17,6 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // Validasi format email secara ketat (jika input mengandung tanda @, wajib format email valid)
         $rules = [
             'login_id' => 'required',
             'password' => 'required'
@@ -38,13 +37,14 @@ class AuthController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             $request->session()->regenerate();
 
+            // Cukup gunakan 1 Auth bawaan (web guard), tidak perlu Auth::guard('admin')
+            Auth::login($user);
+
+            // Arahkan berdasarkan jenis akun (Role)
             if ($user->is_admin) {
-                Auth::guard('admin')->login($user);
-                Auth::guard('web')->login($user);
-                return redirect()->intended('/admin');
+                return redirect()->intended('/admin'); // Admin nyasar akan dilempar ke Dashboard
             } else {
-                Auth::guard('web')->login($user);
-                return redirect()->intended('/');
+                return redirect()->intended('/'); // Masyarakat dilempar ke Beranda Utama
             }
         }
 
