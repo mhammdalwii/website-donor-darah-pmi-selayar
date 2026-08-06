@@ -63,13 +63,29 @@ class AuthController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email:rfc,dns|unique:users,email',
-            'no_hp' => 'required|string|max:20|unique:users,no_hp',
+            'no_hp' => [
+                'required',
+                'string',
+                'min:10',
+                'max:13',
+                'unique:users,no_hp',
+                'regex:/^08[0-9]{8,11}$/',
+                function ($attribute, $value, $fail) {
+                    if (preg_match('/(.)\1{5,}/', $value)) {
+                        $fail('Nomor HP tidak valid. Tolong masukkan nomor asli Anda.');
+                    }
+                },
+            ],
             'alamat' => 'required|string',
             'password' => 'required|min:8|confirmed',
         ], [
             'password.confirmed' => 'Konfirmasi password tidak cocok dengan password yang dimasukkan.',
             'password.min' => 'Password minimal harus 8 karakter.',
             'email.email' => 'Pastikan Anda memasukkan format email yang benar.',
+            'no_hp.regex' => 'Nomor HP harus diawali dengan angka 08.',
+            'no_hp.min' => 'Nomor HP terlalu pendek (minimal 10 angka).',
+            'no_hp.max' => 'Nomor HP terlalu panjang (maksimal 13 angka).',
+            'no_hp.unique' => 'Nomor HP ini sudah terdaftar sebelumnya.',
         ]);
 
         $user = User::create([

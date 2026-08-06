@@ -24,7 +24,6 @@
                         class="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white/80 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition">
                 </div>
 
-                <!-- FIELD EMAIL BARU -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Email <span
                             class="text-red-500">*</span></label>
@@ -35,10 +34,15 @@
                     @enderror
                 </div>
 
+                <!-- FIELD NOMOR HP YANG SUDAH DITINGKATKAN KEAMANANNYA -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nomor HP (WhatsApp) <span
                             class="text-red-500">*</span></label>
-                    <input type="number" name="no_hp" required
+                    <input type="tel" name="no_hp" required minlength="10" maxlength="13"
+                        pattern="^08[0-9]{8,11}$"
+                        title="Nomor HP harus diawali dengan 08 dan memiliki panjang 10-13 angka"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 13) this.value = this.value.slice(0, 13);"
+                        placeholder="Contoh: 081234567890"
                         class="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white/80 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition">
                     @error('no_hp')
                         <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
@@ -81,12 +85,10 @@
                     @enderror
                 </div>
 
-                <!-- KONFIRMASI PASSWORD (BARU) -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password <span
                             class="text-red-500">*</span></label>
                     <div x-data="{ show: false }" class="relative">
-                        <!-- Wajib bernama password_confirmation -->
                         <input :type="show ? 'text' : 'password'" name="password_confirmation" required
                             class="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white/80 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition pr-12">
                         <button type="button" @click="show = !show"

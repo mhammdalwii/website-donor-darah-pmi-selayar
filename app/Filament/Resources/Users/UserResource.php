@@ -37,6 +37,13 @@ class UserResource extends Resource
                         ->required()
                         ->maxLength(255),
 
+                    Forms\Components\TextInput::make('email')
+                        ->label('Alamat Email')
+                        ->email()
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->maxLength(255),
+
                     Forms\Components\TextInput::make('no_hp')
                         ->label('Nomor HP')
                         ->required()
@@ -79,6 +86,11 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Lengkap')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
                     ->searchable()
                     ->sortable(),
 
