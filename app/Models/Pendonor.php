@@ -13,6 +13,7 @@ class Pendonor extends Model
         'golongan_darah',
         'nomor_telepon',
         'tanggal_donor_terakhir',
-        'alamat'
+        'alamat',
+        'bukti_chat_persetujuan',
     ];
 }
