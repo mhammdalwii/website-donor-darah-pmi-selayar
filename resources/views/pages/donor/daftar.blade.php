@@ -19,9 +19,35 @@
                         </thead>
                         <tbody class="text-sm md:text-base">
                             @forelse($pendonors as $pendonor)
+                                @php
+                                    // FUNGSI SENSOR NAMA
+                                    $nama_asli = $pendonor->nama_lengkap;
+                                    $kata_kata = explode(' ', $nama_asli);
+                                    $nama_disensor = [];
+
+                                    foreach ($kata_kata as $kata) {
+                                        $panjang = strlen($kata);
+                                        if ($panjang <= 2) {
+                                            // Jika kata hanya 1 atau 2 huruf (misal: "M", "Al"), biarkan saja
+                                            $nama_disensor[] = $kata;
+                                        } elseif ($panjang == 3) {
+                                            // Jika 3 huruf (misal: "Eka"), sensor huruf tengahnya (E*a)
+                                            $nama_disensor[] = substr($kata, 0, 1) . '*' . substr($kata, -1);
+                                        } else {
+                                            // Jika lebih dari 3 huruf, ambil huruf pertama & terakhir, sisanya bintang
+                                            $huruf_awal = substr($kata, 0, 1);
+                                            $huruf_akhir = substr($kata, -1);
+                                            $bintang = str_repeat('*', $panjang - 2);
+                                            $nama_disensor[] = $huruf_awal . $bintang . $huruf_akhir;
+                                        }
+                                    }
+                                    $nama_tampil = implode(' ', $nama_disensor);
+                                @endphp
+
                                 <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
                                     <td class="p-4 text-gray-800 font-medium">
-                                        {{ $pendonor->nama_lengkap }}
+                                        {{-- Tampilkan nama yang sudah disensor --}}
+                                        {{ $nama_tampil }}
                                         <div class="text-xs text-gray-500 mt-1 md:hidden">
                                             {{ Str::limit($pendonor->alamat, 30) ?? '-' }}</div>
                                     </td>
@@ -45,11 +71,10 @@
                                                 $phone = '62' . substr($phone, 1);
                                             }
 
-                                            // Teks otomatis dengan memanggil nama pendonor
+                                            // Teks pesan WhatsApp (Di sini kita TETAP menggunakan nama aslinya agar sopan saat dihubungi)
                                             $pesan = "Assalamualaikum wr wb bapak/ibu {$pendonor->nama_lengkap}, mohon maaf mengganggu waktunya. Izin apakah bapak/ibu bersedia untuk donor darah? Saya dapat wa nya dari informasi resmi PMI Kabupaten Kepulauan Selayar.";
                                         @endphp
 
-                                        <!-- Menambahkan pesan ke dalam link URL WhatsApp -->
                                         <a href="https://wa.me/{{ $phone }}?text={{ urlencode($pesan) }}"
                                             target="_blank"
                                             class="inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition text-sm font-medium">

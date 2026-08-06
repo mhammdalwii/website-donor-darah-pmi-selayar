@@ -19,9 +19,32 @@
                 </thead>
                 <tbody class="text-sm md:text-base">
                     @forelse($pendonors as $pendonor)
+                        @php
+                            // FUNGSI SENSOR NAMA
+                            $nama_asli = $pendonor->nama_lengkap;
+                            $kata_kata = explode(' ', $nama_asli);
+                            $nama_disensor = [];
+
+                            foreach ($kata_kata as $kata) {
+                                $panjang = strlen($kata);
+                                if ($panjang <= 2) {
+                                    $nama_disensor[] = $kata;
+                                } elseif ($panjang == 3) {
+                                    $nama_disensor[] = substr($kata, 0, 1) . '*' . substr($kata, -1);
+                                } else {
+                                    $huruf_awal = substr($kata, 0, 1);
+                                    $huruf_akhir = substr($kata, -1);
+                                    $bintang = str_repeat('*', $panjang - 2);
+                                    $nama_disensor[] = $huruf_awal . $bintang . $huruf_akhir;
+                                }
+                            }
+                            $nama_tampil = implode(' ', $nama_disensor);
+                        @endphp
+
                         <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
                             <td class="p-4 text-gray-800 font-medium">
-                                {{ $pendonor->nama_lengkap }}
+                                {{-- Menampilkan nama yang sudah disensor --}}
+                                {{ $nama_tampil }}
                                 <div class="text-xs text-gray-500 mt-1 md:hidden">
                                     {{ Str::limit($pendonor->alamat, 35) ?? '-' }}
                                 </div>
@@ -41,6 +64,7 @@
                                     if (substr($phone, 0, 1) === '0') {
                                         $phone = '62' . substr($phone, 1);
                                     }
+                                    // Pesan WA tetap menggunakan nama asli agar sopan
                                     $pesan = "Assalamualaikum wr wb bapak/ibu {$pendonor->nama_lengkap}, mohon maaf mengganggu waktunya. Izin apakah bapak/ibu bersedia untuk donor darah? Saya dpt wa nya dari informasi resmi PMI Kabupaten Kepulauan Selayar.";
                                 @endphp
                                 <a href="https://wa.me/{{ $phone }}?text={{ urlencode($pesan) }}" target="_blank"
