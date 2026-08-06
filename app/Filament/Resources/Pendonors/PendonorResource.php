@@ -64,6 +64,20 @@ class PendonorResource extends Resource
                     Forms\Components\DatePicker::make('tanggal_donor_terakhir')
                         ->label('Tanggal Donor Terakhir'),
                 ])->columns(2),
+
+            // SEKSI BARU: DOKUMEN PENDUKUNG
+            Section::make('Dokumen Pendukung')
+                ->schema([
+                    Forms\Components\FileUpload::make('bukti_chat_persetujuan')
+                        ->label('Bukti Chat Persetujuan')
+                        ->helperText('Unggah screenshot bukti persetujuan dari pendonor. Format: JPG/PNG. Maksimal ukuran: 2MB.')
+                        ->image()
+                        ->maxSize(2048)
+                        ->disk('public_uploads')
+                        ->directory('bukti-persetujuan')
+                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                        ->columnSpanFull(),
+                ]),
         ]);
     }
 
@@ -71,14 +85,12 @@ class PendonorResource extends Resource
     {
         return $table
             ->columns([
-                // 1. Kolom Nama Pendonor (Dibuat lebih tebal untuk hierarki visual)
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Pendonor')
                     ->weight('semibold')
                     ->searchable()
                     ->sortable(),
 
-                //  Kolom Alamat (Diberi limit & placeholder jika kosong)
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
                     ->limit(40)
@@ -86,7 +98,6 @@ class PendonorResource extends Resource
                     ->color('gray')
                     ->searchable(),
 
-                //  Kolom Golongan Darah (Rata tengah untuk estetika badge)
                 Tables\Columns\TextColumn::make('golongan_darah')
                     ->label('Golongan Darah')
                     ->badge()
@@ -100,7 +111,6 @@ class PendonorResource extends Resource
                     })
                     ->searchable(),
 
-                //  Kolom Kontak WA 
                 Tables\Columns\TextColumn::make('nomor_telepon')
                     ->label('Kontak WA')
                     ->icon('heroicon-m-chat-bubble-left-ellipsis')
@@ -114,19 +124,24 @@ class PendonorResource extends Resource
                             $phone = '62' . substr($phone, 1);
                         }
 
-                        // Teks otomatis dengan memanggil nama pendonor
                         $pesan = "Assalamualaikum wr wb bapak/ibu {$record->nama_lengkap}, mohon maaf mengganggu waktunya. Izin apakah bapak/ibu bersedia untuk donor darah? Saya dpt wa nya dari informasi resmi PMI.";
                         return "https://wa.me/{$phone}?text=" . urlencode($pesan);
                     })
                     ->openUrlInNewTab(),
 
-                // 5. Kolom Tanggal Donor (Format rapi, rata tengah, placeholder jika belum pernah donor)
                 Tables\Columns\TextColumn::make('tanggal_donor_terakhir')
                     ->label('Tanggal Donor')
                     ->date('d M Y')
                     ->alignCenter()
                     ->placeholder('Belum pernah')
                     ->sortable(),
+
+                // Menampilkan preview kecil bukti chat di tabel admin
+                Tables\Columns\ImageColumn::make('bukti_chat_persetujuan')
+                    ->label('Bukti Chat')
+                    ->disk('public_uploads')
+                    ->alignCenter()
+                    ->placeholder('Tidak ada foto'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('golongan_darah')
